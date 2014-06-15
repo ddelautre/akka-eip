@@ -1,6 +1,6 @@
 package com.ilunin.akka.eip
 
-import akka.actor.Actor
+import akka.actor.{Props, Actor}
 import scala.reflect.ClassTag
 import com.ilunin.akka.eip.Aggregator.{Aggregated, AggregationDone, Complete}
 
@@ -29,5 +29,7 @@ object Aggregator {
   case object Aggregated extends AggregatorResult
 
   case class AggregationDone[A](aggregation: A) extends AggregatorResult
+
+  def props[M, A](aggregation: A, aggregationStrategy: (M, A) => A) = Props(classOf[Aggregator[M, A]], aggregationStrategy, aggregation)
 
 }
